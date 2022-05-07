@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{%block title%} Welcome! {% endblock %}
+
+ {% block content %}   
+ <div class="container">
+    <h1>Welcome to Voicify</h1>
+    <p>
+    A text-to-voiceover generator powered by Azure Speech Services!
+    </p>
+    <br>Please paste the texts that you want to convert here. </br>
+    <br>SSML text feature will be added in the next FHL. </br>
+    
+        <form method="post">{% csrf_token %} 
+          <div class="tab-wrap">
+            <input type="radio" id="tab1" name="tabgroup1" class="tab" checked>
+            <label for="tab1">Text</label>
+            <input type="radio" id="tab2" name="tabgroup1" class="tab" >
+            <label for="tab2">SSML_text</label>
+
+            <div class="tab__content">
+              <textarea class="textinput" id ="text" name="text" >{{text}}</textarea>
+            </div>
+          
+            <div class="tab__content">
+              <textarea class="textinput" id ="SSML_text" name="SSML_text" placeholder="SSML text feature will be added in the next FHL stage." >{{SSML_text}}</textarea>
+            </div>
+
+          </div>
+          <p> <br>From the dropdown lists, choose the language and voice. Press the <b> Preview </b> button to try out different voices.</br>
+          <br> When you are done, press <b>Save as MP3 </b> to download your audio file. </br></p>
+          <select id="region" name="region" >
+                <option selected disabled>Choose Region</option>
+              </select>
+              <select id="voice_person" name="voice_person" selected disabled>
+              </select>
+              {{ region|json_script:"selected_region" }}
+              
+              {{ person|json_script:"selected_person" }}
+              {{ text|json_script:"selected_text" }}
+            {% csrf_token %}
+            <button type="submit" name="preview" value="preview"> Preview </button>
+            <button type-"submit" name="save" value="save_mp3"> Save as MP3 </button>
+        </form>
+      
+        <br>
+       
+
+</div>    
+<script>
+////////////////////////////////////
+// data
+const region_voices = {
+    'af-ZA':{label:"Afrikaans (South Africa)",voices:[
+    {label:"Female Adri",value:"AdriNeural"},
+    {label:"Male Willem",value:"WillemNeural"}],
+    default:["Jy kan die teks vervang met enige soort teks wat jy voor wens. Jy kan kies om te skryf in die teks boks of plak jou eie teks hier. Probeer verskillende tale en stemme. Verander die spoed en toonhoogte van die stem. Jy kan selfs die SSML (Spraak sintese opmaak taal) aanpas om die verskillende seksies in die teks klank te verander. Klik op SSML bo om dit uit te probeer! Geniet die gebruik van Teks tot Spraak!"]
+    },
+    'af-ET':{label:"Amharic (Ethiopia)",voices:[
+    {label:"Female Mekdes",value:"MekdesNeural"},
+    {label:"Male Ameha",value:"AmehaNeural"}],
+    default:["በሚፈልጉት በማንኛውም ጽሑፍ ይህንን ጽሑፍ መተካት ይችላሉ። በዚህ የጽሑፍ ሳጥን ውስጥ መጻፍ ወይም የራስዎን ጽሑፍ እዚህ መለጠፍ ይችላሉ። የተለያዩ ቋንቋዎችን እና ድምጾችን ይሞክሩ። የድምፅን ፍጥነት እና ፍጥነት ይለውጡ። የጽሑፉ የተለያዩ ክፍሎች እንዴት እንደሚሰሙ ለመቆጣጠር SSML (የንግግር ውህደት ምልክት ቋንቋ) እንኳን መለወጥ ይችላሉ። ለመሞከር ከላይ SSML ላይ ምልክት ያድርጉ! ለንግግር ጽሑፍን በመጠቀም ይደሰቱ!"]
+    },
+    'zh-HK': {label: 'Chinese (Cantonese, Traditional)', voices: [
+    {label:'Female HiuGaai', value:'HiuGaaiNeural'},
+    {label:'Female HiuMaan', value:'HiuMaanNeural'},
+    {label:'Male WanLung', value:'WanLungNeural'},
+  ],default: ["您可以使用任何文字取代此處的文字。您可以直接填寫此文字方塊，也可以將您自己的文字貼在此處。試試不同的語言及聲音。變更說話的速度及音調。您甚至可以調整 SSML (語音合成標記語言)，控制文字音節的差異。按一下上方的 SSML 試試看！歡迎使用文字轉換語音！"]
+  },
+  'zh-CN': {label: 'Chinese (Mandarin, Simplified)', voices: [
+      {label:'Female Xiaohan', value:'XiaohanNeural'},
+      {label:'Female Xiaomo', value:'XiaomoNeural'},
+      {label:'Female Xiaoqiu', value:'XiaoqiuNeural'},
+      {label:'Female Xiaorui', value:'XiaoruiNeural'},
+      {label:'Female Xiaoyou', value:'XiaoyouNeural'},
+      {label:'Male Yunxi', value:'YunxiNeural'},
+      {label:'Male Yunyang', value:'YunyangNeural'},
+      {label:'Male Yunye', value:'YunyeNeural'},
+    ],default: ["你可将此文本替换为所需的任何文本。你可在此文本框中编写或在此处粘贴你自己的文本。试用不同的语言和声音。改变语速和音调。你甚至可调整 SSML（语音合成标记语言），以控制文本不同部分的声音效果。单击上面的 SSML 试用一下！请尽情使用文本转语音功能！"]
+    },
+    'en-US': {label: 'English (United States)', voices: [
+      {label:'Female Amber', value:'AmberNeural'},
+      {label:'Female Aria', value:'AriaNeural'},
+      {label:'Female Ashley', value:'AshleyNeural'},
+      {label:'Female Cora', value:'CoraNeural'},
+      {label:'Kid Ana', value:'AnaNeural'},
+      {label:'Male Brandon', value:'BrandonNeural'},
+      {label:'Male Christopher', value:'ChristopherNeural'},
+      {label:'Male Eric', value:'EricNeural'},
+      {label:'Male Guy', value:'GuyNeural'},
+    ],default: ["You can replace this text with any text you wish. You can either write in this text box or paste your own text here. Try different languages and voices. Change the speed and the pitch of the voice. You can even tweak the SSML (Speech Synthesis Markup Language) to control how the different sections of the text sound. Click on SSML above to give it a try! Enjoy using Text to Speech!"]
+    },
+   
+    'en-IN': {label: 'English (India)', voices: [
+    {label:'Female Neer', value:'NeerjaNeural'},
+    {label:'Male Prabhat', value:'PrabhatNeural'},
+  ],default: ["You can replace this text with any text you wish. You can either write in this text box or paste your own text here. Try different languages and voices. Change the speed and the pitch of the voice. You can even tweak the SSML (Speech Synthesis Markup Language) to control how the different sections of the text sound. Click on SSML above to give it a try! Enjoy using Text to Speech!"]
+  },
+    
+  'fr-CA': {label: 'French (Canada)', voices: [
+      {label:'Female Sylvie', value:'SylvieNeural'},
+      {label:'Male Antoine', value:'AntoineNeural'},
+      {label:'Male Jean', value:'JeanNeural'},
+    ],default: ["Vous pouvez remplacer ce texte par le texte de votre choix. Vous pouvez écrire dans cette zone de texte ou coller votre propre texte ici. Essayez différentes langues et voix. Modifiez la vitesse et le ton de la voix. Vous pouvez même adapter le langage SSML (Speech Synthesis Markup Language) pour contrôler la prononciation des différentes sections du texte. Cliquez sur SSML ci-dessus pour essayer! Profitez de la synthèse vocale !"]
+},
+    
+    'de-DE': {label: 'German (Germany)', voices: [
+    {label:'Female Conrad', value:'ConradNeural'},
+    {label:'Male Leni', value:'LeniNeural'},
+  ],default: ["Sie können diesen Text durch jeden beliebigen Text ersetzen. Sie können entweder in dieses Textfeld schreiben oder Ihren eigenen Text hier einfügen. Probieren Sie verschiedene Sprachen und Stimmen aus. Ändern Sie die Geschwindigkeit und die Tonhöhe der Stimme. Sie können die SSML-Datei (Speech Synthesis Markup Language) sogar optimieren, um zu steuern, wie verschiedene Abschnitte des Texts klingen. Klicken Sie oben auf SSML, um es auszuprobieren. Lassen Sie sich von der Sprachsynthese überzeugen!"]
+},
+
+    'es-MX': {label: 'Spanish (Mexico)', voices: [
+    {label:'Female Dalia', value:'DaliaNeural'},
+    {label:'Male Jorge', value:'JorgeNeural'},
+  ],default: ["Puede reemplazar este texto por el que desee. Puede escribir o pegar su propio texto en este cuadro de texto. Pruebe diferentes idiomas y voces. Cambie la velocidad y el tono de la voz. Puede incluso ajustar el SSML (lenguaje de marcado de síntesis de voz) para controlar cómo suenan diferentes secciones del texto. Haga clic en SSML para probarlo. ¡Disfrute de Text to Speech!"]
+},
+
+    'es-US': {label: 'Spanish (US)', voices: [
+    {label:'Female Paloma', value:'PalomaNeural'},
+    {label:'Male Alonso', value:'AlonsoNeural'},
+    ],default: ["Puede reemplazar este texto por el que desee. Puede escribir o pegar su propio texto en este cuadro de texto. Pruebe diferentes idiomas y voces. Cambie la velocidad y el tono de la voz. Puede incluso ajustar el SSML (lenguaje de marcado de síntesis de voz) para controlar cómo suenan diferentes secciones del texto. Haga clic en SSML para probarlo. ¡Disfrute de Text to Speech!"]
+},
+
+  };
+  //retrieve selected region and selected person from the html part.
+  const selected_region = JSON.parse(document.getElementById('selected_region').textContent);
+  const selected_person = JSON.parse(document.getElementById('selected_person').textContent);
+  const selected_text = JSON.parse(document.getElementById('selected_text').textContent);
+
+   
+  ////////////////////////////////////
+  // initialize region list
+  let region_select = document.getElementById('region');
+  for (var region in region_voices) {
+    let newOption = new Option(region_voices[region].label,region);
+    region_select.add(newOption,undefined);
+  }
+
+  region_select.value='en-US';
+
+  // Function to display default text and the list of voices  based on selected region
+function display_voice_text(region_ID){
+  let region_key = document.getElementById('region').value;
+  let person_select = document.getElementById('voice_person');
+  document.getElementById('text').value=region_voices[region_key].default;
+      // remove all existing person options
+      while (person_select.options.length > 0) {
+          person_select.remove(0);
+        }
+      
+        // add person options
+        if ( ! region_voices[region_key])
+        {
+          alert('missing data for '+region_key);
+          return;
+        }
+        region_voices[region_key].voices.forEach(voice => {
+          let newOption = new Option(voice.label,voice.value);
+          person_select.add(newOption,undefined);
+        });
+      
+        // enable field
+        person_select.disabled = false;
+}
+
+///Function to change selected region and person based on previous POST
+function select(selectId, optionValToSelect){
+    //Get the select element by it's unique ID.
+    var selectElement = document.getElementById(selectId);
+    //Get the options.
+    var selectOptions = selectElement.options;
+    //Loop through these options using a for loop.
+    for (var opt, j = 0; opt = selectOptions[j]; j++) {
+        //If the option of value is equal to the option we want to select.
+        if (opt.value == optionValToSelect) {
+            //Select the option and break out of the for loop.
+            selectElement.selectedIndex = j;
+            break;
+        }
+    }
+}
+
+////load default selected region: en-US
+display_voice_text('en-US');
+
+/////load selected region from previous POST
+select("region", selected_region);
+
+//load voice list and the default text for the selected region 
+display_voice_text(selected_region);
+
+/////Set selected person voice
+select("voice_person", selected_person);
+
+///Load previously typed text from previous POST if it is not null
+if (selected_text){
+  document.getElementById('text').value=selected_text;
+}
+
+  ////////////////////////////////////
+  // Change the default text and list of voice on change of region
+  document.getElementById('region').addEventListener('change', event => {
+    display_voice_text('region')
+});
+
+</script>
+{% endblock %}

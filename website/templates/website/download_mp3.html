@@ -1,0 +1,12 @@
+{% load static %}
+<!DOCTYPE Content-Disposition: attachment; {{filename}}>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title%}{%endblock %}</title>
+    <link rel="stylesheet" href="{% static 'website/style.css' %}">
+</head>
+<body>
+Click <a href="mp3/{{file_name}}"> here </a> to download the mp3 file. 
+ 
+</body>

@@ -1,0 +1,7 @@
+Overview
+The purpose of this project is to make the process of text to speech, and localization easier. So it includes two parts:
+1.	Text to speech: User pastes a paragraph of texts to the input textbox of the app, they will be able to choose characters and press a text to speech button. The app will then convert the texts to speech, and provide an export option to allow the audio file to be saved as common audio file types, e.g. mp3, wav. 
+2.	Localization:
+a.	Step 1: texts are translated into a different language, most likely by humans;
+b.	Step 2: Copy and paste the translated language to the input textbox of the app, choose voice, convert texts to speech, then save as an audio file. 
+

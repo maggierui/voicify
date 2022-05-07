@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{%block title%} Welcome! {% endblock %}
+
+ {% block content %}   
+    <h1>Welcome to Texty-Talkie</h1>
+    <p>
+    A text-to-voiceover generator powered by Azure Speech Services!
+    </p>
+    <p> {{message}} 
+        <form method="post">
+            <table>
+                {{form}}
+            </talbe>
+            {% csrf_token %}
+            <button type="submit"> Preview </button>
+            <button type-"submit"> Save Audio </button>
+        </form>
+
+        
+       
+        <br>
+       
+    </br>
+    </p>
+{% endblock %}

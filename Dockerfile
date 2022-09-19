@@ -1,29 +1,22 @@
-FROM python:3.10-windowsservercore
+FROM python:3.10.4-windowsservercore-1809
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+#ADD https://aka.ms/vs/17/release/vc_redist.x64.exe /vc_redist.x64.exe
+#RUN vc_redist.x64.exe /install /quiet /norestart /log vc_redist.log
+
+ADD https://aka.ms/vs/17/release/vc_redist.x64.exe /vc_redist.x64.exe
+RUN C:\vc_redist.x64.exe /install /quiet 
+
+# set environment variables
+ENV PYTHONIOENCODING UTF-8
+ENV PYTHON_VERSION 3.10.4
+ENV PYTHONUNBUFFERED=11
 
 RUN mkdir /code
+# set work directory
 WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt --no-cache-dir
+
 ADD . /code/
-
-# ssh
-ENV SSH_PASSWD "root:Docker!"
-RUN apt-get update \
-RUN apt-get install -y --no-install-recommends dialog \
-RUN apt-get update \
-RUN apt-get install -y --no-install-recommends openssh-server \
-RUN echo "$SSH_PASSWD" | chpasswd 
-
-COPY sshd_config /etc/ssh/
-COPY init.sh /usr/local/bin/
-COPY Microsoft.CognitiveServices.Speech.extension.audio.sys.dll /usr/local/lib/python3.10/site-packages/azure/cognitiveservices/speech/
-COPY Microsoft.CognitiveServices.Speech.core.dll /usr/local/lib/python3.10/site-packages/azure/cognitiveservices/speech/
-COPY Microsoft.CognitiveServices.Speech.extension.codec.dll /usr/local/lib/python3.10/site-packages/azure/cognitiveservices/speech/
-COPY Microsoft.CognitiveServices.Speech.extension.kws.dll /usr/local/lib/python3.10/site-packages/azure/cognitiveservices/speech/
-COPY Microsoft.CognitiveServices.Speech.extension.lu.dll /usr/local/lib/python3.10/site-packages/azure/cognitiveservices/speech/
-
-	
-RUN chmod u+x /usr/local/bin/init.sh
-EXPOSE 8000 2222
-#CMD ["python", "/code/manage.py", "runserver", "0.0.0.0:8000"]
-ENTRYPOINT ["init.sh"]
+EXPOSE 8000
+CMD ["python", "/code/manage.py", "runserver", "0.0.0.0:8000"]

@@ -1,3 +1,4 @@
+azure-cognitiveservices-speech
+Gunicorn
 Django
 whitenoise
-azure-cognitiveservices-speech

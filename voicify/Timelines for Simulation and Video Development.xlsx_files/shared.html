@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- saved from url=(0216)https://ffc-shared.officeapps.live.com/clipboard/shared.aspx?CreatorOrigin=https%3A%2F%2Fffc-excel.officeapps.live.com&usid=706151b5-0757-4613-b579-730b70976bfc&corrid=07a84b62-caba-4405-a7ed-3ce571c49a02&NoAuth=true -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>
+	Shared Clipboard iframe content
+</title>
+  <script type="text/javascript">
+var sharedClipboardSettings = {
+ whitelistOriginComponents: 1,
+ staticContentURLPrefix: "https://c5-shared-15.cdn.office.net:443/clipboard/s/161531035903_App_Scripts/",
+ sharedClipboardExpirationInMinutes: 3600,
+ clipboardPromiseTimeoutInMinutes: 2,
+ sharedClipboardSchemaVersion: 2,
+ remoteLoggerPath: "/x/RemoteUls.ashx",
+
+ sharedClipboardHostingApp: "ffc-shared",
+ sharedClipboardHostingApps: "[\"broadcast\", \"excel\", \"onenote\", \"powerpoint\", \"view\", \"visio\", \"word-edit\", \"word-view\", \"shared\"]",
+ sharedClipboardHostingEnvironments: "[\"officeapps.live.com\", \"officeapps-df.live.com\", \"online.office.de\", \"gov.online.office365.us\", \"dod.online.office365.us\", \"partner.officewebapps.cn\"]"
+
+};
+
+var es6PromiseScriptFileName = 'es6-promise.auto.min.js';
+var sharedClipboardScriptFileName = 'sharedclipboard.min.js';
+
+var promisesCapability = typeof Promise !== 'undefined' && typeof Promise.resolve === 'function' && Promise.resolve(0) &&
+ typeof Promise.resolve(0).then === 'function';
+
+function loadScript(fileName) {
+  var scriptElement = document.createElement('script');
+  scriptElement.setAttribute('src', getScriptSrc(fileName));
+  scriptElement.setAttribute('type', 'text/javascript');
+  scriptElement.setAttribute('async', 'false');
+  scriptElement.setAttribute('defer', 'defer');
+  var body = document.getElementsByTagName('body')[0];
+  body.appendChild(scriptElement);
+}
+
+function getScriptSrc(fileName) {
+  var prefix = sharedClipboardSettings.staticContentURLPrefix;
+  if (!prefix) {
+    return fileName;
+  }
+
+  var queryMark = prefix.indexOf('?');
+  if (queryMark < 0) {
+    return prefix + fileName;
+  }
+
+  var postfix = prefix.substr(queryMark);
+  prefix = prefix.substr(0, queryMark);
+  return prefix + fileName + postfix;
+}
+  </script>
+ </head>
+ <body onload="window.sharedClipboard.initialize();" data-new-gr-c-s-check-loaded="14.1013.0" data-gr-ext-installed="">
+  <script>
+if (!promisesCapability) {
+ loadScript(es6PromiseScriptFileName);
+}
+loadScript(sharedClipboardScriptFileName);
+  </script><script src="./sharedclipboard.min.js.download" type="text/javascript" async="false" defer="defer"></script>
+ 
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

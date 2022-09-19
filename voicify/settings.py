@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-h8hp=t2dexd=m=kqm52^c%mo(zln2b3no^2@xg^bec9op-*qi#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['voicify.azurewebsites.net','127.0.0.1','localhost',]
+ALLOWED_HOSTS = ['voicify.azurewebsites.net','127.0.0.1','localhost','10.40.0.7']
 
 CSRF_TRUSTED_ORIGINS=['https://voicify.azurewebsites.net/']
 

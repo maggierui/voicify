@@ -1,0 +1,47 @@
+Steps to build docker
+1. switch between windows and linux
+& $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon .
+2.docker pull mcr.microsoft.com/windows/servercore:ltsc2022
+
+change to:
+docker pull mcr.microsoft.com/windows/servercore:ltsc2019
+
+3. docker pull python
+4. build docker image: 
+docker-compose up --build
+
+5. login to registry:
+az acr login --name <registry-name>
+
+6. tag image (make sure to check the image's name-here it is voicify_web not voicify)
+docker tag voicify_web voicify.azurecr.io/voicify_web:v2
+
+7. push image to registry
+docker push voicify.azurecr.io/voicify_web:v2
+
+8. remove local image
+docker rmi voicify.azurecr.io/voicify_web:v2
+
+9. if no container registry, create one
+
+10. create web app from container. Follow instructions here: https://docs.microsoft.com/en-us/azure/app-service/tutorial-custom-container?pivots=container-windows
+
+
+Note: it is important to set env:
+ADD https://aka.ms/vs/17/release/vc_redist.x64.exe /vc_redist.x64.exe
+RUN C:\vc_redist.x64.exe /quiet /install
+
+Note: Azure Speech services uses VC++ so you have to install vc_redist correct bit (32 or 64 matching python's 32 or 64) on the container 
+ADD https://aka.ms/vs/17/release/vc_redist.x64.exe /vc_redist.x64.exe
+RUN C:\vc_redist.x64.exe /quiet /install
+
+Note: container app with no exposed port will run background
+Add EXPOSE 8000 in Dockerfile
+
+{"code":"DeploymentFailed","message":"At least one resource deployment operation failed. 
+Please list deployment operations for details.
+ Please see https://aka.ms/DeployOperations for usage details.","details":[{"message":"The parameter WindowsFxVersion has an invalid value. 
+Cannot run the specified image as a Windows Containers Web App. App Service supports Windows Containers up to Windows Server Core 2019 and Nanoserver 1809. Platform of the specified image: windows, Version: 10.0.20348.643;"}]}
+
+{"code":"DeploymentFailed","message":"At least one resource deployment operation failed. Please list deployment operations for details. 
+Please see https://aka.ms/DeployOperations for usage details.","details":[{"message":"The parameter WindowsFxVersion has an invalid value. Cannot run the specified image as a Windows Containers Web App. App Service supports Windows Containers up to Windows Server Core 2019 and Nanoserver 1809. Platform of the specified image: windows, Version: 10.0.20348.643;"}]}
